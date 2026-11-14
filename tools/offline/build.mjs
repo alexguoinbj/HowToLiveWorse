@@ -21,6 +21,7 @@ const corpus = {
   readme,
   parts: Object.fromEntries(files.map(f => [f, read(f)])),
   docs: Object.fromEntries(docs.map(f => [f, read(f)])),
+  images: Object.fromEntries([...new Set([...files, ...docs].flatMap(f => [...read(f).matchAll(/!\[[^\]]*\]\(\.\.\/(assets\/illustrations\/[^)]+\.svg)\)/g)].map(m => m[1])))].map(f => [f, 'data:image/svg+xml;base64,' + readFileSync(resolve(ROOT, f)).toString('base64')])),
   // 最近更新的标记，tools/updates.mjs 生成、入库
   updates: JSON.parse(read('updates.json')),
 };
